@@ -75,7 +75,7 @@ class Data2(Data):
 
     def clone_abs(self, exclude_keys=['biparts_ls', 'part_ls', 'child_part', 'child_bipart', 'parent_graph']):
         """ to return an abstract Data graph by removing some extra features. It's used to save memory"""
-        keys = set(self.keys) - set(exclude_keys)
+        keys = set(self.keys()) - set(exclude_keys)
         return Data2(**dict([(key_, self[key_]) for key_ in keys])).to(self.edge_index.device)
 
     def degree(self, is_weighted=False):

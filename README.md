@@ -34,6 +34,22 @@ Rest of  dependencies can be installed via
 
   ```pip install -r requirements.txt```
 
+## Windows environment and smoke run
+
+Use Python 3.10 and the dependency versions in `pyproject.toml` / `uv.lock`:
+
+```powershell
+uv sync --locked
+.\.venv\Scripts\python.exe main.py -c configs/higen_smoke.yaml
+```
+
+The CUDA environment uses PyTorch 2.8.0 with CUDA 12.9 and matching prebuilt
+PyG extensions. NumPy stays below 2 for compatibility with pyemd 1.0.0.
+The smoke config builds three synthetic hierarchical graphs, trains for one
+epoch, and saves a checkpoint under `exp/smoke`. Its caches are stored under
+`data/smoke`; rerunning rebuilds these synthetic caches. To run on CPU, append
+`--gpu -1`.
+
 ## Datasets
 Datasets should be unzipped to directory: `data`
 

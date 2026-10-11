@@ -434,11 +434,11 @@ def get_HG_of_orders(
     - HG_ords_list: A list of coarsened graphs in HG format.
 
     """
-    G = nx.from_numpy_matrix(nx.to_numpy_matrix(G))
+    G = nx.from_numpy_array(nx.to_numpy_array(G))
 
     # Get the connected components of the graph
     CG_ls = [G.subgraph(c) for c in nx.connected_components(G)]
-    CG_ls = [nx.from_numpy_matrix(nx.to_numpy_matrix(CG_)) for CG_ in CG_ls]
+    CG_ls = [nx.from_numpy_array(nx.to_numpy_array(CG_)) for CG_ in CG_ls]
 
     # Sort connected components (sub-graphs) from largest to smallest size
     CG_ls = sorted(CG_ls, key=lambda x: x.number_of_nodes(), reverse=True)
@@ -476,8 +476,8 @@ def get_HG_of_orders(
             # Degree Descent or Degree Ascent
             degree_seq = sorted(node_degree_list, key=lambda tt: tt[1],
                                 reverse=True if order_=='DD' else False)
-            G_ord = nx.from_numpy_matrix(
-                nx.to_numpy_matrix(G, nodelist=[dd[0] for dd in degree_seq])
+            G_ord = nx.from_numpy_array(
+                nx.to_numpy_array(G, nodelist=[dd[0] for dd in degree_seq])
             )
             HG_ord = graph_to_hierarchical_graph(
                 G_ord,
@@ -498,8 +498,8 @@ def get_HG_of_orders(
                     sort_tree = nx.dfs_tree(CG_ls[ii], source=degree_seq[0][0])
                 node_list_sorted += list(sort_tree.nodes())
 
-            G_ord = nx.from_numpy_matrix(
-                nx.to_numpy_matrix(G,nodelist=node_list_sorted)
+            G_ord = nx.from_numpy_array(
+                nx.to_numpy_array(G,nodelist=node_list_sorted)
             )
             HG_ord = graph_to_hierarchical_graph(
                 G_ord,
@@ -511,8 +511,8 @@ def get_HG_of_orders(
         elif order_ in ['BFSAC', 'BFSDC']:
             # Perform modified BFS traversal
             node_list_sorted = bfs_modified([G], sort_order=order_)
-            G_ord = nx.from_numpy_matrix(
-                nx.to_numpy_matrix(G, nodelist=node_list_sorted)
+            G_ord = nx.from_numpy_array(
+                nx.to_numpy_array(G, nodelist=node_list_sorted)
             )
             HG_ord = graph_to_hierarchical_graph(
                 G_ord,
@@ -525,8 +525,8 @@ def get_HG_of_orders(
         elif order_ == 'rand':
             perm_ = list(range(G.number_of_nodes()))
             random.shuffle(perm_)
-            G_ord = nx.from_numpy_matrix(
-                nx.to_numpy_matrix(G, nodelist=perm_)
+            G_ord = nx.from_numpy_array(
+                nx.to_numpy_array(G, nodelist=perm_)
             )
             HG_ord = graph_to_hierarchical_graph(
                 G_ord,

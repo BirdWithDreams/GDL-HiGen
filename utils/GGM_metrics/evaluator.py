@@ -16,7 +16,7 @@ def get_stats_eval(config):
         raise ValueError
 
     def eval_stats_fn(test_dataset, pred_graph_list):
-        pred_G = [nx.from_numpy_matrix(pred_adj) for pred_adj in pred_graph_list]
+        pred_G = [nx.from_numpy_array(pred_adj) for pred_adj in pred_graph_list]
         sub_pred_G = []
         if config.eval.max_subgraph:
             for G in pred_G:
@@ -41,7 +41,7 @@ def get_nn_eval(config):
         N_gin = 10
 
     def nn_eval_fn(test_dataset, pred_graph_list):
-        pred_G = [nx.from_numpy_matrix(pred_adj) for pred_adj in pred_graph_list]
+        pred_G = [nx.from_numpy_array(pred_adj) for pred_adj in pred_graph_list]
         sub_pred_G = []
         if config.eval.max_subgraph:
             for G in pred_G:

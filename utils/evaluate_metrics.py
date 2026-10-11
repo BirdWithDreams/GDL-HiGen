@@ -16,10 +16,10 @@ def evaluate(graph_gt, graph_pred, stats, kernel="gaussian_tv", to_correct_edges
         graph_pred_ = []
         for G_ in graph_pred:
             if not G_ is None:
-                adj_ = np.minimum(nx.to_numpy_matrix(G_), 1)
+                adj_ = np.minimum(nx.to_numpy_array(G_), 1)
                 if not np.sum(adj_ - adj_.transpose()) == 0:
                     print("------ Generated graph is not symmetric ..... ")
-                graph_pred_.append(nx.from_numpy_matrix(adj_))
+                graph_pred_.append(nx.from_numpy_array(adj_))
         graph_pred = graph_pred_
 
     out = edict()

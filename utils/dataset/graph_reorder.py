@@ -49,7 +49,7 @@ def sort_graph_nodes(G, G_parent, order='BFS'):
         )
         
         # Convert the Data2 object to a networkx graph
-        G_part_nx = nx.from_numpy_matrix(G_part_.adj(is_weighted=True).cpu().numpy())
+        G_part_nx = nx.from_numpy_array(G_part_.adj(is_weighted=True).cpu().numpy())
         part_ls.append(G_part_nx)
 
     if order == 'BFS':

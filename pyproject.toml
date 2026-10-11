@@ -1,0 +1,42 @@
+[project]
+name = "gdl-higen"
+version = "0.1.0"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "easydict>=1.13",
+    "graphgps",
+    "igraph>=1.0.0",
+    "matplotlib>=3.10.9",
+    "networkx>=3.4.2",
+    "numpy>=1.26.4,<2",
+    "scikit-learn",
+    "performer-pytorch",
+    "yacs",
+    "torch-scatter==2.1.2",
+    "torch-sparse==0.6.18",
+    "pyemd==1.0.0",
+    "setuptools<81",
+    "pyg-lib==0.6.0",
+    "python-louvain>=0.16",
+    "pyyaml>=6.0.3",
+    "scipy>=1.15.3",
+    "tensorboardx>=2.6.5",
+    "torch==2.8.0",
+    "torch-geometric>=2.6.1",
+    "tqdm>=4.66.5",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu129" }
+graphgps = { git = "https://github.com/rampasek/GraphGPS.git" }
+
+[tool.uv]
+no-build-package = ["torch-scatter", "torch-sparse", "pyg-lib"]
+find-links = [
+    "https://data.pyg.org/whl/torch-2.8.0+cu129.html"
+]

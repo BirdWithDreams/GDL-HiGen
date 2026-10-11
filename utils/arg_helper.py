@@ -4,7 +4,7 @@ import argparse
 from easydict import EasyDict as edict
 import torch
 import torch.nn as nn
-from torch_geometric.graphgym.register import register_act
+from torch_geometric.graphgym.register import register_act, act_dict
 
 class struct(object):
     def __init__(self):
@@ -61,7 +61,8 @@ def parse_arguments(command_str=None):
     return args
 
 
-register_act('relu', nn.ReLU)
+if 'relu' not in act_dict:
+    register_act('relu', nn.ReLU)
 
 pe_encoder_setting_dict = {
     'LapPE': 'posenc_LapPE',
@@ -198,13 +199,13 @@ def get_config(config_file, exp_dir=None, is_test=False,
                test_model_name=None, draw_training=False):
     """ To construct hyperparameters
     """
-    config = edict(yaml.load(open(config_file, 'r')))
+    config = edict(yaml.safe_load(open(config_file, 'r')))
     hp = HParams(**config.model).update_config(hp_txt)
     config.model.update(hp.dict_)
 
     # to overwrite the node_order from hp_txt
     node_order = config.model.get('node_order', None)
-    if not ((node_order is None) and node_order == 'none'):
+    if node_order is not None and node_order != 'none':
         config.dataset.node_order = node_order
 
     # to create hyperparameters

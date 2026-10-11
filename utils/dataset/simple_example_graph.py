@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import List
 import torch
 from utils.graph_helper import *
@@ -124,6 +125,12 @@ def load_simple_example_graph() -> List[List[HG]]:
         child_bipart=[None, bp_01, bp_10, None],
     )
 
+    # The two-community example needs local parent node IDs 0 and 1.
+    part1_local, part2_local, bp12_local, bp21_local = deepcopy(
+        (G1_part1, G1_part2, bp_12, bp_21)
+    )
+    part1_local.part_id = 0
+    part2_local.part_id = 1
     G0_part2 = Data2(
         ord=ord_,
         level=0,
@@ -135,8 +142,8 @@ def load_simple_example_graph() -> List[List[HG]]:
         part_id=0,
         edge_weight=torch.tensor([5, 1, 1, 3], dtype=torch.long),
         edge_feat=torch.zeros([4, 0]),
-        child_part=[G1_part1, G1_part2],
-        child_bipart=[None, bp_12, bp_21, None],
+        child_part=[part1_local, part2_local],
+        child_bipart=[None, bp12_local, bp21_local, None],
     )
 
     # Create HGs (list of levels) based on parts and bipartites in each level
@@ -151,7 +158,7 @@ def load_simple_example_graph() -> List[List[HG]]:
         bipart_ls=G0.child_bipart,
         g_id='sim0'
     )
-    for key in G1.keys: print(f'{key}, =, {G1[key]}')
+    for key in G1.keys(): print(f'{key}, =, {G1[key]}')
     hg0 = HG([G0, G1], max_level=2, ord=ord_)
     hg0.set_id('sim0')
     hg_ord_0 = [hg0]
@@ -169,7 +176,7 @@ def load_simple_example_graph() -> List[List[HG]]:
         bipart_ls=G0.child_bipart,
         g_id='sim1'
     )
-    for key in G1.keys: print(f'{key}, =, {G1[key]}')
+    for key in G1.keys(): print(f'{key}, =, {G1[key]}')
     hg1 = HG([G0, G1], max_level=2, ord=ord_)
     hg1.set_id('sim1')
     hg_ord_1 = [hg1]
@@ -185,10 +192,10 @@ def load_simple_example_graph() -> List[List[HG]]:
         bipart_ls=G0.child_bipart,
         g_id='sim2'
     )
-    for key in G1.keys: print(f'{key} = {G1[key]}')
+    for key in G1.keys(): print(f'{key} = {G1[key]}')
     hg2 = HG([G0, G1], max_level=2, ord=ord_)
     hg2.set_id('sim2')
-    hg_ord_2 = [hg1]
+    hg_ord_2 = [hg2]
 
     dataset = [hg_ord_0, hg_ord_1, hg_ord_2]
     return dataset

@@ -20,7 +20,7 @@ def get_coarsened_graphs(G: Graph, num_levels: int, **kwargs) -> List[Graph]:
     - abs_graph_ls: A list of coarsened graphs.
 
     """
-    G2 = nx.from_numpy_matrix(nx.to_numpy_matrix(G, weight='weight'))
+    G2 = nx.from_numpy_array(nx.to_numpy_array(G, weight='weight'))
 
     if kwargs['coarsening_alg'].lower()[0:2] == 'sc':
         # Apply spectral clustering based coarsening
@@ -53,10 +53,10 @@ def get_induced_graph(clusters, G: Graph) -> Graph:
     for j in range(len(clusters)):
         cluster_asign[j, clusters[j]] = 1
 
-    adj = nx.to_numpy_matrix(G)
+    adj = nx.to_numpy_array(G)
     adj_parent = np.matmul(np.matmul(cluster_asign, adj), np.transpose(cluster_asign))
     adj_parent -= np.diag(np.diag(adj_parent) / 2)
-    return nx.from_numpy_matrix(adj_parent)
+    return nx.from_numpy_array(adj_parent)
 
 
 def best_spectral_partition(G: Graph, k_min, k_max):
@@ -77,7 +77,7 @@ def best_spectral_partition(G: Graph, k_min, k_max):
     modularity_ls = []
     for K in range(k_min, k_max + 1):
         # Perform spectral clustering algorithm
-        adj_mat = nx.to_numpy_matrix(G)
+        adj_mat = nx.to_numpy_array(G)
         sc = SpectralClustering(K, affinity='precomputed', n_init=1000)
         sc.fit(adj_mat)
         partition = dict([(i, label) for i, label in enumerate(sc.labels_)])

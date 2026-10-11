@@ -6,7 +6,6 @@ import torch.nn.functional as F
 ## The following might be needed for this issue:
 # https://stackoverflow.com/questions/48250053/pytorchs-dataloader-too-many-open-files-error-when-no-files-should-be-open"""
 torch.multiprocessing.set_sharing_strategy('file_system')
-from multiprocessing import Manager
 from torch_geometric.data import Batch
 from utils.graph_helper import *
 
@@ -405,8 +404,8 @@ class HigenData(object):
         if self.is_sample_subgraph:
             assert self.num_subgraph_batch > 0
 
-        manager = Manager()
-        self.file_names = manager.list(file_names)
+        # Paths are read-only; a tuple also works with Windows spawn workers.
+        self.file_names = tuple(file_names)
 
     def __len__(self):
         return self.num_graphs
